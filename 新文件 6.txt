@@ -1,0 +1,15 @@
+# 增加普通topic
+sh bin/mqadmin updatetopic -n 10.10.23.139:9876 -t TestTopic1 -c DefaultCluster
+# 增加延迟topic
+sh bin/mqadmin updatetopic -n 10.10.23.139:9876 -t TopicDelay -c DefaultCluster -a +message.type=DELAY
+# 查看所有topic
+sh bin/mqadmin topicList -n 10.10.23.139:9876 -c DefaultCluster 
+# 删除topic
+sh bin/mqadmin deleteTopic -n 10.10.23.139:9876 -c DefaultCluster -t TopicDelay1
+# 查看topic路由信息
+sh bin/mqadmin topicRoute -n 10.10.23.139:9876  -t TopicDelay
+# 创建顺序topic
+sh bin/mqadmin updateTopic -n 10.10.23.139:9876 -t TopicFifo -c DefaultCluster -a +message.type=FIFO
+# 创建订阅消费组
+sh bin/mqadmin updateSubGroup -c DefaultCluster -g FIFOGroup -n 10.10.23.139:9876 -o true
+
