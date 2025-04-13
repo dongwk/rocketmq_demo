@@ -1,3 +1,9 @@
+# 启动
+nohup sh bin/mqnamesrv &
+nohup sh bin/mqbroker -n localhost:9876 --enable-proxy &
+# 关闭
+sh bin/mqshutdown broker
+sh bin/mqshutdown namesrv
 # 增加普通topic
 sh bin/mqadmin updatetopic -n 10.10.23.139:9876 -t TestTopic1 -c DefaultCluster
 # 增加延迟topic
@@ -12,4 +18,15 @@ sh bin/mqadmin topicRoute -n 10.10.23.139:9876  -t TopicDelay
 sh bin/mqadmin updateTopic -n 10.10.23.139:9876 -t TopicFifo -c DefaultCluster -a +message.type=FIFO
 # 创建订阅消费组
 sh bin/mqadmin updateSubGroup -c DefaultCluster -g FIFOGroup -n 10.10.23.139:9876 -o true
-
+# 查看生产者消费进度
+sh mqadmin consumerProgress -n localhost:9876
+```
+model 是 集群 ,tps是每秒消费数量, type 消费方式,group 是消费者组 DiffTotal 堆积消息数
+```	
+# 清除堆积数据,这里不是清除而是重置消费位点
+sh mqadmin resetOffsetByTime -n localhost:9876 -g YourConsumerGroup -t TopicTest -s -1
+# 查看消费者下 topic 消费进度
+sh mqadmin consumerProgress -n localhost:9876 -g YourConsumerGroup
+```
+broker offset 相当于是消息生产位点,consumer offset 是消息消费位点. 如果两者差异过大,新增的数据就不会实时看到. diff 是剩余未消费消息
+```
