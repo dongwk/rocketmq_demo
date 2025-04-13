@@ -30,3 +30,7 @@ sh mqadmin consumerProgress -n localhost:9876 -g YourConsumerGroup
 ```
 broker offset 相当于是消息生产位点,consumer offset 是消息消费位点. 如果两者差异过大,新增的数据就不会实时看到. diff 是剩余未消费消息
 ```
+# 查询队列状态
+sh bin/mqadmin topicStatus -n 10.10.23.139:9876 -t %DLQ%YourConsumerGroup
+# 查看消费队列状态
+sh bin/mqadmin consumerStatus -n 10.10.23.139:9876 -t TopicTest -g YourConsumerGroup
